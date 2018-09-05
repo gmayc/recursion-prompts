@@ -135,7 +135,7 @@ var powerOfTwo = function(n) {
   }
 };
 
-console.log(powerOfTwo(10));
+
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
@@ -146,13 +146,22 @@ var reverse = function(string) {
   } 
 };
 
-console.log(reverse('hello'));
+
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
-  
-
+  string = string.toLowerCase();
+  if (string.length === 0 || string.length === 1) {
+    return true;
+  } 
+  if (string.slice(0,1) === string.slice(-1)) {
+    return palindrome(string.slice(1, string.length-1));
+  } else {
+    return false;
+  }
 };
+
+
 
 // 11. Write a function that returns the remainder of x divided by y without using the
 // modulo (%) operator.
@@ -160,17 +169,55 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+  if (y === 0) {
+    return NaN;
+  }
+  if (y < 0) {
+    y = - y;
+  }
+  if (x < 0) {
+    x = - x;
+    return -modulo(x,y);
+  }
+  if (x < y) {
+    return x;
+  }
+  return modulo(x - y, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
 var multiply = function(x, y) {
+  if (y === 0 || x === 0) {
+    return 0;
+  } 
+  if (y < 0 && x > 0) {
+    return -x + multiply(x, y+1);
+  } else if (x < 0 && y > 0) {
+    return x + multiply(x, y-1);
+  } else if (x < 0 && y < 0)  {
+    return x + multiply(-x, -y+1);
+  } else if (x > 0 && y > 0)  {
+    return x + multiply(x, y-1);
+  }
 };
+
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
 var divide = function(x, y) {
+  if (y === 0 || x === 0) {
+    return 0;
+  }
+  var result = 0;
+  if (x >= 0) {
+    result++;
+    return divide((x - y), y)+1;
+  }
+  return (result - 1);
 };
+
+console.log(divide(64, 32));
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
 // integers is the greatest integer that divides both x and y with no remainder.
