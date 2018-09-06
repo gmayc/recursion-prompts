@@ -330,30 +330,78 @@ var countOccurrence = function(array, value) {
   return counter + countOccurrence(array.slice(1, array.length), value);
 };
 
-console.log(countOccurrence([2,'banana',4,4,1,'banana'], 'banana'));
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+  var arr = [];
+  if(array.length === 0) {
+    return arr;
+  }
+  arr.push(callback(array[0]))
+  return arr.concat(rMap(array.slice(1), callback));
 };
 
+
 // 22. Write a function that counts the number of times a key occurs in an object.
-// var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
+var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, key) {
+  var counter = 0;
+  for (keys in obj){
+
+    if (obj[keys] instanceof Object && keys === key) {
+      counter++;
+      counter = counter + countKeysInObj(obj[keys], key);
+    }
+    else if (obj[keys] instanceof Object) {
+      counter = counter + countKeysInObj(obj[keys], key);
+    } 
+    else if(keys === key){
+      counter++;
+    }
+  }
+  return counter;
+
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
 // var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
-var countValuesInObj = function(obj, value) {
+var countValuesInObj = function (obj, value) {
+  var counter = 0;
+  for (keys in obj) {
+
+    if (obj[keys] instanceof Object) {
+      counter = counter + countValuesInObj(obj[keys], value);
+    } else if (obj[keys] === value) {
+      counter++;
+    }
+  }
+  return counter;
 };
+
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
-var replaceKeysInObj = function(obj, oldKey, newKey) {
+var replaceKeysInObj = function (obj, oldKey, newKey) {
+
+  for (key in obj) {
+    if (obj[key] instanceof Object && key === oldKey) {
+      obj[newKey] = obj[oldKey];
+      delete obj[oldKey];
+      replaceKeysInObj(obj[key], oldKey, newKey);
+    } else if (obj[key] instanceof Object) {
+      replaceKeysInObj(obj[key], oldKey, newKey);
+    } else if (key === oldKey) {
+      obj[newKey] = obj[oldKey];
+      delete obj[oldKey];
+    }
+  }
+  return obj;
 };
+
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
 // number is the sum of the previous two.
@@ -361,6 +409,7 @@ var replaceKeysInObj = function(obj, oldKey, newKey) {
 // fibonacci(5); // [0,1,1,2,3,5]
 // Note: The 0 is not counted.
 var fibonacci = function(n) {
+  
 };
 
 // 26. Return the Fibonacci number located at index n of the Fibonacci sequence.
