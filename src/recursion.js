@@ -212,12 +212,12 @@ var divide = function(x, y) {
   var result = 0;
   if (x >= 0) {
     result++;
-    return divide((x - y), y)+1;
+    return 1 + divide((x - y), y);
   }
   return (result - 1);
 };
 
-console.log(divide(64, 32));
+// console.log(divide(64, 32));
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
 // integers is the greatest integer that divides both x and y with no remainder.
@@ -225,18 +225,37 @@ console.log(divide(64, 32));
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
 var gcd = function(x, y) {
+  if (x < 0 || y < 0) {
+    return null;
+  }
+  if (!y) {
+    return x;
+  }
+  return gcd(y, x % y);
 };
+
+
 
 // 15. Write a function that compares each character of two strings and returns true if
 // both are identical.
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+  var index = 0;
+  if (str1 === '' && str2 === '') {
+    return true;
+  }
+  if(str1[0] === str2[0]) {
+    return compareStr(str1.slice(1,str1.length),str2.slice(1,str2.length));
+  } else {
+    return false;
+  }
 };
-
+console.log(compareStr('tomato', 'tomatos'));
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+  
 };
 
 // 17. Reverse the order of an array
